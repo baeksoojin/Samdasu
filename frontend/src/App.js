@@ -86,6 +86,7 @@ function Camera(){
     }
 
 
+    //html form 만들기, 위에는 관련 함수들 만들어 넣기
     return(
         <div className="camera">
             <div className="video">
