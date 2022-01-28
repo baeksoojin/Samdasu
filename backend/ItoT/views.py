@@ -23,8 +23,6 @@ class ImageView(APIView):
         # queryset = Image.objects.all()
         # serializer_data =serializer_class(queryset,many=True)
 
-        pytesseract.pytesseract.tesseract_cmd = r'/opt/homebrew/Cellar/tesseract/5.0.1/bin/tesseract'
-
         img = Image.objects.last()
         url = img.image_url
 
