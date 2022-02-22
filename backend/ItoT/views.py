@@ -34,7 +34,9 @@ class ImageView(APIView):
         text = pytesseract.image_to_string(image_test,lang='kor') 
         print("text:"+text)
         #text변수에 image에서 뽑아낸 text값이 저장됨
+        text = text.replace(" ","")
         img.text = re.split('\n',text)
+        
         img.save()
 
         queryset2 = Image.objects.all()
