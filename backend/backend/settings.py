@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-46mgb9c*2vm%v5t4x8lib5_pk0##2f&#qzimg3l!smzz#6s98r
 DEBUG = True
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ItoT',
+    'user_models',
     'rest_framework',
     'corsheaders',
 
@@ -84,10 +85,13 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'allergy',
+        'USER': 'root',
+        "PASSWORD": '100sujin'
     }
 }
+
 
 
 # Password validation
@@ -130,3 +134,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'user_models.User'
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
