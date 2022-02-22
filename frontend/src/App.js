@@ -74,8 +74,34 @@ function Camera(){
                 .then(response => {
                     console.log(response);
                     // console.log(response.data);
-                    console.log(response.data[response.data.length-1]);
-                    setText(response.data[response.data.length-1].text);
+
+                    console.log("======사진속 음식에 존재하는 알레르기 유발 성분======");
+                    console.log(response.data.allergies);
+
+                    if(response.data.check == true)
+                    {
+                        console.log("======[user]님이 입력한 알레르기 유발 성분이 존재합니다.======");
+                        console.log(response.data.warn);
+                        let i=0;
+                        let view_data = "";
+                        for(i; i<response.data.warn.length; i++){
+                            console.log(response.data.warn[i]);
+                            if(i==0) view_data = response.data.warn[i];
+                            else view_data = view_data + "  와  " + response.data.warn[i];
+                            
+                        }
+                        
+                        //console.log(view_data);
+                        setText(view_data);
+                    
+                    }
+                    else{
+                        console.log("======알레르기 유발성분이 존재하지 않습니다=========");
+                    }
+
+
+                    // console.log(response.data[response.data.length-1]);
+                    // setText(response.data[response.data.length-1].text);
                   })
 
               })
@@ -95,10 +121,11 @@ function Camera(){
             <div className = {"photo" + (hasPhoto ? 'hasPhoto' : '')}>
            
               <canvas ref={photoRef}></canvas>
-              < button className="button" onClick={putData}>submit</button>  
+              < button className="button" onClick={putData}>submit</button>
+              <p>{Text}의 성분이 들어있습니다. </p> 
 
-               
             </div>
+              
         </div>
 
 
