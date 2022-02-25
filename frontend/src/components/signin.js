@@ -1,7 +1,17 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
+import axiosInstance from "../axios";
+import { useNavigate } from 'react-router-dom';
+axios.defaults.withCredentials = true;
+
 
 const Signin = () => {
+
+    let navigate = useNavigate();
+
+    const Camera = () => {
+        navigate(`/Camera`);
+    };
     
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
@@ -16,15 +26,32 @@ const Signin = () => {
 
         const user_data = {
             email: email,
+            password: password,
+        };
+        const user_ldata = {
+            email: email,
             pw: password,
         };
 
-        axios.post('http://127.0.0.1:8000/api/user/login',user_data).then(res => {
-            console.log(res.data.token);
-        //api/user/data를 통해서 email과 pw가 일치하는 회원정보를 get해오기.
+
+        axiosInstance.post('token/',user_data).then((res)=>{
+            localStorage.setItem('access_token', res.data.access);
+            localStorage.setItem('refresh_token', res.data.refresh);
+            axiosInstance.defaults.headers['Authorization'] = "JWT " + res.data.access;
+
+            console.log(res);
+            console.log(res.data);
+            axiosInstance.get('user/data').then(res=>{console.log(res);}).then(
+                
+                Camera
+            )
+
         });
 
+      
+        
     };
+
 
     const onChangeEmail = (e) => {
         setEmail(e.target.value);

@@ -15,6 +15,17 @@ const Homepage = () => {
       navigate(`/Camera`);
   }
 
+  const Logout = () => {
+    navigate(`/Logout`);
+  }
+
+    if(localStorage.getItem("refresh_token")){
+      console.log("로그인됨");
+    }
+    else{
+      console.log("로그아웃상태");
+    }
+
 
   return (
     <div className="homepage">
@@ -25,11 +36,13 @@ const Homepage = () => {
         <div className="Sign">
             <button className="button" onClick={SignIn}>로그인</button>
             <button className="button" onClick={SignUp}>회원가입</button>
+            <button className="button" onClick={Logout}>로그아웃</button>
         </div>
         <div className="OCR">
             <button className="button" onClick={ocr}>Camera</button>
         
         </div>
+
 
 
     </div>

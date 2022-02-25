@@ -6,9 +6,15 @@ from rest_framework.exceptions import AuthenticationFailed
 from .serializers import UserSerializer
 from rest_framework.response import Response
 from .models import User
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+from rest_framework_simplejwt.tokens import RefreshToken
 
-import jwt, datetime
-
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from backend.settings import SIMPLE_JWT
+import json
+from django.http import JsonResponse
+from base64 import b64decode
 # Create your views here.
 
 class UserView(APIView):
@@ -18,70 +24,43 @@ class UserView(APIView):
         serializer.save()
         return Response(serializer.data)
         
-
-    
-class LoginView(APIView):
-    def post(self, request):
-        email = request.data['email']
-        pw = request.data['pw']
-
-        user = User.objects.filter(email = email).first()
-
-        if user is None:
-            raise AuthenticationFailed('user not found')
-        
-        if not user.check_password(pw):
-            raise AuthenticationFailed("incorrect password")
-
-        payload = {
-            "id": user.id,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
-            'iat': datetime.datetime.utcnow()
-
-        }
-
-        token = jwt.encode(payload, 'secret', algorithm='HS256')
-        #'str' object has no attribute 'decode' -> .decode('utf-8')우선 지움
-
-        response = Response()
-
-        response.set_cookie(key='jwt',value=token, httponly=True)
-        response.data = {
-            "token": token
-            
-        }
-
-        return response
-
-
-
-# {"name": "test", "email": "test.com","pw": "test"} => { "email": "test.com","pw": "test"}
-
+#{"email":"test.com","pw":"test"}
 class UserDataView(APIView):
     def get(self,request):
-        token = request.COOKIES.get('jwt')
+        
+        auth_token = request.headers.get("Authorization", None)
+        print(auth_token)
+        
+      
+         # 토큰 값이 아예 안 들어왔을 때 401 코드 처리 및 메시지 출력
+        if auth_token == None:
+            return JsonResponse({'message':'Enter the token.'}, status=401)
 
-        if not token:
+
+        if not auth_token:
             raise AuthenticationFailed('Unauthenticatied!')
-
         try:
-            payload = jwt.decode(token,'secret',algorithms=['HS256'])
-        except jwt.ExpiredSignatureError:
+            temp = auth_token.split('.')
+            ptemp = temp[1]+"=="
+            payload = b64decode(ptemp)
+            payload = payload.decode('utf-8')
+            payload = json.loads(payload)
+            print(payload)
+
+        except Exception as e:
             raise AuthenticationFailed('Unauthenticated!')
         
-        user = User.objects.filter(id = payload['id']).first()
+        user = User.objects.filter(id = payload['user_id']).first()
         serializer = UserSerializer(user)
-
-
         return Response(serializer.data)
 
-class LogoutView(APIView):
+class LogoutAndBlacklistRefreshTokenForUserView(APIView):
     def post(self, request):
-        response = Response()
-        response.delete_cookie('jwt')
-        response.data = {
-            'message': 'success logout'
-        }
-
-        return (response)
+        try:
+            refresh_token = request.data["refresh_token"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
