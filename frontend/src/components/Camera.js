@@ -1,7 +1,27 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
+import Authentication from "../logincheck";
+import { useNavigate } from "react-router-dom";
 
 function Camera(){
+
+    let navigate = useNavigate();
+    const Login = () => {
+        console.log(
+            "로그인후에 사용해주세요"
+        )
+        navigate(`/Signin`);
+    };
+
+    useEffect(()=>{
+        const check = Authentication()
+        console.log(check);
+
+        if(check==false){
+            alert("로그인후 이용해주세요.");
+            Login();
+        }
+    });
 
     const data = {url: "none"};
 
@@ -25,7 +45,8 @@ function Camera(){
             video.play();
         })
         .catch(err => {
-            console.err(err);
+            console.log("login페이지로이동");
+            // console.err(err);
         })
 
     }
@@ -99,9 +120,6 @@ function Camera(){
                         console.log("======알레르기 유발성분이 존재하지 않습니다=========");
                     }
 
-
-                    // console.log(response.data[response.data.length-1]);
-                    // setText(response.data[response.data.length-1].text);
                   })
 
               })
@@ -110,6 +128,7 @@ function Camera(){
         }
 
     }
+
 
 
     return(

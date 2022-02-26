@@ -9,9 +9,17 @@ const Signin = () => {
 
     let navigate = useNavigate();
 
+    const Homepage = () => {
+        navigate(`/`);
+    };
+
     const Camera = () => {
         navigate(`/Camera`);
     };
+
+    const Signup = () => {
+        navigate(`/Signup`);
+    }
     
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
@@ -73,6 +81,11 @@ const Signin = () => {
             
             <div style={{marginTop:10}}>
                 <button type="primary" onClick={onSubmit}>로그인하기</button>
+                <button type="primary" onClick={Homepage}>홈으로</button>
+            </div>
+            <div style={{marginTop:10}}>
+                <p>아직 계정이 없으신가요?</p>
+                <button type="primary" onClick={Signup}>회원가입</button>
             </div>
         </div>
     );

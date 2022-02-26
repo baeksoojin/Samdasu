@@ -13,8 +13,6 @@ from PIL import Image as Image_pil
 import urllib.request
 import pytesseract
 
-
-
 class ImageView(APIView):
     
     def get(self,request):
@@ -93,6 +91,8 @@ class ImageView(APIView):
         return Response(result)
 
     def post(self,request):
+
+
 
         serializer_data = ImageViewSerializer(data = request.data)
         if serializer_data.is_valid():

@@ -17,7 +17,12 @@ from django.http import JsonResponse
 from base64 import b64decode
 # Create your views here.
 
+
+from rest_framework.permissions import AllowAny, IsAuthenticated
+
+
 class UserView(APIView):
+
     def post(self,request):
         serializer = UserSerializer(data = request.data)
         serializer.is_valid(raise_exception=True)
@@ -26,6 +31,7 @@ class UserView(APIView):
         
 #{"email":"test.com","pw":"test"}
 class UserDataView(APIView):
+    
     def get(self,request):
         
         auth_token = request.headers.get("Authorization", None)
@@ -55,6 +61,7 @@ class UserDataView(APIView):
         return Response(serializer.data)
 
 class LogoutAndBlacklistRefreshTokenForUserView(APIView):
+    
     def post(self, request):
         try:
             refresh_token = request.data["refresh_token"]

@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 const Signup = () => {
+
+    let navigate = useNavigate();
 
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
@@ -27,7 +29,9 @@ const Signup = () => {
             name: name,
         };
 
-        axios.post('http://127.0.0.1:8000/api/user/signup',user_data)
+        axios.post('http://127.0.0.1:8000/api/user/signup',user_data).then(
+            navigate(`/`)
+        )
     }
 
     const onChangeEmail = (e) => {
