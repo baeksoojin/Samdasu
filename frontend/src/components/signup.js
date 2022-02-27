@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
 const Signup = () => {
 
     let navigate = useNavigate();
@@ -49,33 +50,72 @@ const Signup = () => {
         setPasswordCheck(e.target.value);
     };
 
+    // Allergy check form
+    const form_b = () => {
+        // 선택된 목록 가져오기
+       const query = 'input[name="allergy"]:checked';
+       const selectedEls = document.querySelectorAll(query);
+
+       // 선택된 목록에서 value 찾기
+       let result = '';
+       selectedEls.forEach((el)=>{
+           result += el.value + ' ';
+           //console.log(result);
+       })
+
+       console.log(result);
+
+       // 출력하기
+       document.getElementById('result').innerText=result;
+    }
+
     return (
     <div className="signup">
+            <div className = "TopBar">
+                <labe1>samdasu</labe1>
+            </div><br/>
+            <div className="input">
+                <label className="label">email</label><br/>
+                <input className="user" name="user-id" value={email} required onChange={onChangeEmail} />
+            </div><br/>
             <div>
-                <label >email</label><br/>
-                <input name="user-id" value={email} required onChange={onChangeEmail} />
-            </div>
+                <label className="label">name(닉네임)</label><br/>
+                <input className="user" name="user-nick" value={name} required onChange={onChangeName} />
+            </div><br/>
             <div>
-                <label >닉네임</label><br/>
-                <input name="user-nick" value={name} required onChange={onChangeName} />
-            </div>
+                <label className="label">password</label><br/>
+                <input className="user"  name="user-password" type="password" value={password} required onChange={onChangePassword} />
+            </div><br/>
             <div>
-                <label >비밀번호</label><br/>
-                <input name="user-password" type="password" value={password} required onChange={onChangePassword} />
-            </div>
-            <div>
-                <label >비밀번호체크</label><br/>
-                <input name="user-password-check" type="password" value={passwordCheck} required onChange={onChangePasswordChk} />
+                <label className="label">password check</label><br/>
+                <input className="user"  name="user-password-check" type="password" value={passwordCheck} required onChange={onChangePasswordChk} />
                 {passwordError && <div style={{color : 'red'}}>비밀번호가 일치하지 않습니다.</div>}
-            </div>
+            </div><br/><br/>
             
+            
+
+            <div className="form" style = {{marginTop:20}}>
+                <label className="label">Allergy Check (알러지 항목 체크)</label>
+                <button3 onClick={form_b} type="button" class='button3' style={{marginTop:20}}>저장하기</button3><br/><br/>
+                <input className = 'checkbox' type='checkbox' name='allergy' value='egg'/>egg
+                <input className = 'checkbox' type='checkbox' name='allergy' value='milk'/>milk
+                <input className = 'checkbox' type='checkbox' name='allergy' value='bean'/>bean
+                <input className = 'checkbox' type='checkbox' name='allergy' value='wheat'/>wheat
+                <input className = 'checkbox' type='checkbox' name='allergy' value='nut'/>nut
+                <input className = 'checkbox' type='checkbox' name='allergy' value='shellfish'/>shellfish
+                <input className = 'checkbox' type='checkbox' name='allergy' value='crustacean'/>crustacean
+            </div><br/><br/><br/>
+
             <div style={{marginTop:10}}>
-                <button type="primary" onClick={onSubmit}>가입하기</button>
-            </div>
+                <button4 className = "button4" type="primary" onClick={onSubmit}>가입하기</button4>
+             </div><br/><br/>
+
         </div>
+
+    
     );
     
 
 }
 
-export default Signup;
+export default Signup;;
