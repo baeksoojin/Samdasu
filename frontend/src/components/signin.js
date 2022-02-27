@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import axiosInstance from "../axios";
 import { useNavigate } from 'react-router-dom';
+import "./signin.css";
 axios.defaults.withCredentials = true;
-
 
 const Signin = () => {
 
@@ -70,22 +70,25 @@ const Signin = () => {
 
     return (
     <div className="signip">
+         <div className = "TopBar">
+                <labe1>samdasu</labe1>
+            </div><br/>
             <div>
-                <label >email</label><br/>
-                <input name="user-id" value={email} required onChange={onChangeEmail} />
-            </div>
+                <label className="label" >email</label><br/>
+                <input className="user" name="user-id" value={email} required onChange={onChangeEmail} />
+            </div><br/>
             <div>
-                <label >비밀번호</label><br/>
-                <input name="user-password" type="password" value={password} required onChange={onChangePassword} />
-            </div>
+                <label className="label" >password</label><br/>
+                <input className="user" name="user-password" type="password" value={password} required onChange={onChangePassword} />
+            </div><br/>
             
             <div style={{marginTop:10}}>
-                <button type="primary" onClick={onSubmit}>로그인하기</button>
-                <button type="primary" onClick={Homepage}>홈으로</button>
-            </div>
+                <button className="button3" type="primary" onClick={onSubmit}>로그인하기</button>
+                <button className="button3" type="primary" onClick={Homepage}>홈으로</button>
+            </div><br/><br/>
             <div style={{marginTop:10}}>
-                <p>아직 계정이 없으신가요?</p>
-                <button type="primary" onClick={Signup}>회원가입</button>
+                <p className="label2">아직 계정이 없으신가요?</p>
+                <button className="button3" type="primary" onClick={Signup}>회원가입</button>
             </div>
         </div>
     );

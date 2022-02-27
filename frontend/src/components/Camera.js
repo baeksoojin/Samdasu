@@ -133,15 +133,18 @@ function Camera(){
 
     return(
         <div className="camera">
+            <div className = "TopBar">
+                <labe1>samdasu</labe1>
+            </div><br/>
             <div className="video">
             <video ref={videoRef}></video>
-            <button className="button" onClick={takePhoto}>Click</button>
+            <button className="button3" onClick={takePhoto}>Click</button>
             </div>
             <div className = {"photo" + (hasPhoto ? 'hasPhoto' : '')}>
            
               <canvas ref={photoRef}></canvas>
-              < button className="button" onClick={putData}>submit</button>
-              <p>{Text}의 성분이 들어있습니다. </p> 
+              < button className="button3" onClick={putData}>submit</button>
+              <p className="label2">{Text}의 성분이 들어있습니다. </p> 
 
             </div>
               

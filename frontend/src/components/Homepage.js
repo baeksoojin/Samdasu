@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Logout from "./logout";
+import "./Homepage.css";
 
 const Homepage = () => {
   let navigate = useNavigate();
@@ -31,22 +32,21 @@ const Homepage = () => {
 
   
 
-
   return (
     <div className="homepage">
 
         
         <div className="Sign">
-            <button className="button" onClick={SignIn}>로그인</button>
-            <button className="button" onClick={SignUp}>회원가입</button>
-            <button className="button" onClick={Logout_}>로그아웃</button>
+            <button1 className="button1" onClick={SignUp}>회원가입</button1>
+            <button1 className="button1" onClick={SignIn}>로그인</button1>
+            <button1 className="button1" onClick={Logout_}>로그아웃</button1>
         </div>
         <div className="main">
-          <p>Welcome to "samdasu"</p>
+          <p className>Welcome to "samdasu"</p>
           <p>OCR을 활용해 음식속 알레르기 유발성분을 체크합니다.</p>
         </div>
         <div className="OCR">
-            <button className="button" onClick={ocr}>Camera</button>
+            <button2 className="button2" onClick={ocr}>Camera</button2>
         
         </div>
 
