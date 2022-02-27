@@ -16,6 +16,9 @@ const Signup = () => {
     const onSubmit = (e) => {
         e.preventDefault();
 
+        const allergy = Allergy();
+        console.log(allergy);
+
         if(password !== passwordCheck){
             return setPasswordError(true);
         }
@@ -29,6 +32,7 @@ const Signup = () => {
             email: email,
             pw: password,
             name: name,
+            allergy: allergy,
         };
 
         axios.post('http://127.0.0.1:8000/api/user/signup',user_data).then(
@@ -52,22 +56,20 @@ const Signup = () => {
     };
 
     // Allergy check form
-    const form_b = () => {
+    const  Allergy= () => {
         // 선택된 목록 가져오기
        const query = 'input[name="allergy"]:checked';
        const selectedEls = document.querySelectorAll(query);
 
        // 선택된 목록에서 value 찾기
-       let result = '';
-       selectedEls.forEach((el)=>{
-           result += el.value + ' ';
-           //console.log(result);
-       })
+        let result = '';
+        selectedEls.forEach((el)=>{
+            result += el.value + ' ';
+        })
 
-       console.log(result);
+        console.log(result);
+        return result;
 
-       // 출력하기
-       document.getElementById('result').innerText=result;
     }
 
     return (
@@ -92,12 +94,8 @@ const Signup = () => {
                 <input className="user"  name="user-password-check" type="password" value={passwordCheck} required onChange={onChangePasswordChk} />
                 {passwordError && <div style={{color : 'red'}}>비밀번호가 일치하지 않습니다.</div>}
             </div><br/><br/>
-            
-            
-
             <div className="form" style = {{marginTop:20}}>
                 <label className="label">Allergy Check (알러지 항목 체크)</label>
-                <button3 onClick={form_b} type="button" class='button3' style={{marginTop:20}}>저장하기</button3><br/><br/>
                 <input className = 'checkbox' type='checkbox' name='allergy' value='egg'/>egg
                 <input className = 'checkbox' type='checkbox' name='allergy' value='milk'/>milk
                 <input className = 'checkbox' type='checkbox' name='allergy' value='bean'/>bean
@@ -108,7 +106,7 @@ const Signup = () => {
             </div><br/><br/><br/>
 
             <div style={{marginTop:10}}>
-                <button4 className = "button4" type="primary" onClick={onSubmit}>가입하기</button4>
+                <button4 className = "button3" type="primary" onClick={onSubmit}>가입하기</button4>
              </div><br/><br/>
 
         </div>

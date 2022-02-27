@@ -2,6 +2,7 @@ const Authentication = () => {
 
     if(localStorage.getItem("refresh_token")){
         console.log("login : 접근가능");
+        console.log(localStorage.getItem("allergy"));
         return true;
     }
     else{

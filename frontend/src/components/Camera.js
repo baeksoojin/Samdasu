@@ -2,16 +2,40 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import Authentication from "../logincheck";
 import { useNavigate } from "react-router-dom";
+import "./Camera.css";
 
-function Camera(){
+function Camera({}){
+
+
+    const BaseURL = 'http://127.0.0.1:8000/imageshow/';
+
+    const axiosInstanceCam= axios.create({
+        baseURL: BaseURL,
+        timeout: 5000,
+        headers: {
+            'Authorization': "JWT " + localStorage.getItem('access_token'),
+            'Content-Type': 'application/json',
+            'accept': 'application/json'
+        }, 
+    });
 
     let navigate = useNavigate();
+
     const Login = () => {
         console.log(
             "로그인후에 사용해주세요"
         )
         navigate(`/Signin`);
     };
+
+    const videoRef = useRef(null);
+    const photoRef = useRef(null);
+
+    const [hasPhoto,setHasPhoto] = useState(false);
+    const [urlPhoto,setUrlPhoto] = useState('');
+    const [Text,setText] = useState("");
+    const [allergy,setAllergy] = useState("");
+
 
     useEffect(()=>{
         const check = Authentication()
@@ -21,18 +45,13 @@ function Camera(){
             alert("로그인후 이용해주세요.");
             Login();
         }
+        else{
+            axiosInstanceCam.defaults.headers['Authorization'] = "JWT " +localStorage.getItem('access_token');
+        }
     });
 
-    const data = {url: "none"};
 
-
-    const videoRef = useRef(null);
-    const photoRef = useRef(null);
-
-    const [hasPhoto,setHasPhoto] = useState(false);
-    const [urlPhoto,setUrlPhoto] = useState('');
-    const [Text,setText] = useState("");
-
+    
 
     const StartCam = ()=>{
         navigator.mediaDevices
@@ -56,8 +75,8 @@ function Camera(){
     },[videoRef]);
 
     const takePhoto = ()=>{
-        const width  =150;
-        const height = 150;
+        const width  =120;
+        const height = 120;
 
         let video = videoRef.current;
         let photo = photoRef.current;
@@ -86,18 +105,17 @@ function Camera(){
         }else {
             console.log('good to go');
             console.log('urlphoto :'+ urlPhoto);
-           
-            axios.post('http://127.0.0.1:8000/imageshow/',{image_url: urlPhoto})
 
+           
+           
+            axiosInstanceCam.post('/', {image_url: urlPhoto})
               .then(res => {
                 console.log(res);
-                axios.get('http://127.0.0.1:8000/imageshow/')
+                axiosInstanceCam.get('/')
                 .then(response => {
                     console.log(response);
-                    // console.log(response.data);
 
                     console.log("======사진속 음식에 존재하는 알레르기 유발 성분======");
-                    console.log(response.data.allergies);
 
                     if(response.data.check == true)
                     {
@@ -112,8 +130,15 @@ function Camera(){
                             
                         }
                         
-                        //console.log(view_data);
-                        setText(view_data);
+                        console.log(view_data);
+                        
+                         // 출력하기
+                        if(view_data){
+                            setText(view_data);
+                            document.getElementById('view').innerText=response.data.text+"(이)가존재합니다\n"+
+                            view_data+"로 인한 알레르기가 발생할수 있으니 조심하세요";
+                        }
+                        
                     
                     }
                     else{
@@ -132,21 +157,21 @@ function Camera(){
 
 
     return(
-        <div className="camera">
+        <div className="Cam">
             <div className = "TopBar">
-                <labe1>samdasu</labe1>
+                <labe1>samdasu</labe1>  
             </div><br/>
-            <div className="video">
-            <video ref={videoRef}></video>
-            <button className="button3" onClick={takePhoto}>Click</button>
+            <span>
+            <div className="VideoCam">
+                <video ref={videoRef}></video>
+                <button className="Button" onClick={takePhoto}>Click</button>
             </div>
-            <div className = {"photo" + (hasPhoto ? 'hasPhoto' : '')}>
-           
+            <div className = {"Photo" + (hasPhoto ? 'hasPhoto' : '')}>
               <canvas ref={photoRef}></canvas>
-              < button className="button3" onClick={putData}>submit</button>
-              <p className="label2">{Text}의 성분이 들어있습니다. </p> 
-
+              <button className="Button" onClick={putData}>submit</button>
             </div>
+            <div className = "Showdata" id='view'></div>
+            </span>
               
         </div>
 

@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Camera from './App';
+import APP from './App';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Camera />
+    <APP />
   </React.StrictMode>,
   document.getElementById('root')
 );

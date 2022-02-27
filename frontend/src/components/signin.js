@@ -49,10 +49,10 @@ const Signin = () => {
 
             console.log(res);
             console.log(res.data);
-            axiosInstance.get('user/data').then(res=>{console.log(res);}).then(
-                
-                Camera
-            )
+            axiosInstance.get('user/data').then(res=>{
+                localStorage.setItem('allergy',res.data.allergy);
+                console.log(res);
+            }).then(Camera)
 
         });
 

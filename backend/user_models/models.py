@@ -7,6 +7,7 @@ class User(AbstractUser):
     name = models.CharField(max_length=255)
     email = models.CharField(max_length=255, unique=True)
     pw = models.CharField(max_length=100)
+    allergy = models.CharField(max_length=100, null= True)
 
     username = None
     

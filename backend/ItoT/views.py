@@ -6,12 +6,16 @@ from .serializers import ImageViewSerializer
 from .models import Image
 from django.http import Http404
 import re
-import uuid
-from django.core.files.base import ContentFile
 
 from PIL import Image as Image_pil
 import urllib.request
 import pytesseract
+
+from user_models.models import User
+import json
+from django.http import JsonResponse
+from base64 import b64decode
+from rest_framework.exceptions import AuthenticationFailed
 
 class ImageView(APIView):
     
@@ -29,7 +33,13 @@ class ImageView(APIView):
         #사용자가 찍은 사진을 url을 이용해서 gtg.png로 저장하고 gfg.png를 사용해서 text를 뽑아낼것임. ocr 이용파트 코드는 다음과 같음.
         urllib.request.urlretrieve(url,"gfg.png")
         image_test = Image_pil.open('gfg.png')
-        text = pytesseract.image_to_string(image_test,lang='kor') 
+        text = pytesseract.image_to_string(image_test,lang='kor')
+        # 글씨를 안 찍을경우->text에 아무것도 추출되지 않은경우 -> 안뜸!
+
+        #사진 찍기 않고 test 
+        text = "마요네즈 우유"
+        # => 사진에서 text에 우유와 마요네즈가 찍혀서 잘 ocr기능을 수행해서 text로 우유 마요네즈가 저장됐다고 가정.
+
         print("text:"+text)
         #text변수에 image에서 뽑아낸 text값이 저장됨
         text = text.replace(" ","")
@@ -43,9 +53,35 @@ class ImageView(APIView):
         ############## 알레르기 유발성분 체크 코드###########
 
         # 보유 알러지 / 확인하고 싶은 재료: component => 회원가입시 사용자에게 입력받은 정보.
-        user_data=["egg","milk"]
-        #test
-        #text = "우유 마요네즈"
+        auth_token = request.headers.get("Authorization", None)
+        print("auth_token :",auth_token)
+        
+      
+         # 토큰 값이 아예 안 들어왔을 때 401 코드 처리 및 메시지 출력
+        if auth_token == None:
+            return JsonResponse({'message':'Enter the token.'}, status=401)
+
+
+        if not auth_token:
+            raise AuthenticationFailed('Unauthenticatied!')
+        try:
+            temp = auth_token.split('.')
+            ptemp = temp[1]+"=="
+            payload = b64decode(ptemp)
+            payload = payload.decode('utf-8')
+            payload = json.loads(payload)
+            print(payload)
+
+        except Exception as e:
+            raise AuthenticationFailed('Unauthenticated!')
+        print(User.objects.all())
+        user = User.objects.filter(id = payload['user_id'])
+        dic_user = user.values()[0]
+        print(dic_user.keys())
+        print(dic_user['allergy'])
+        
+        user_data= dic_user['allergy']
+        
 
         #알러지 유발 재료 모음 (추후 보충하기)
 
