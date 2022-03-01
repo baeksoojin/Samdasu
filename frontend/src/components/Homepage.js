@@ -42,7 +42,7 @@ const Homepage = () => {
             <button className="button1" onClick={Logout_}>로그아웃</button>
         </div>
         <div className="main">
-          <p className>Welcome to "samdasu"</p>
+          <p>Welcome to "samdasu"</p>
           <p>OCR을 활용해 음식속 알레르기 유발성분을 체크합니다.</p>
         </div>
         <div className="OCR">
