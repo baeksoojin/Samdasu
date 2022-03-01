@@ -37,16 +37,16 @@ const Homepage = () => {
 
         
         <div className="Sign">
-            <button1 className="button1" onClick={SignUp}>회원가입</button1>
-            <button1 className="button1" onClick={SignIn}>로그인</button1>
-            <button1 className="button1" onClick={Logout_}>로그아웃</button1>
+            <button className="button1" onClick={SignUp}>회원가입</button>
+            <button className="button1" onClick={SignIn}>로그인</button>
+            <button className="button1" onClick={Logout_}>로그아웃</button>
         </div>
         <div className="main">
           <p className>Welcome to "samdasu"</p>
           <p>OCR을 활용해 음식속 알레르기 유발성분을 체크합니다.</p>
         </div>
         <div className="OCR">
-            <button2 className="button2" onClick={ocr}>Camera</button2>
+            <button className="button2" onClick={ocr}>Camera</button>
         
         </div>
 

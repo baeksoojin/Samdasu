@@ -75,7 +75,7 @@ const Signup = () => {
     return (
     <div className="signup">
             <div className = "TopBar">
-                <labe1>samdasu</labe1>
+                <label>samdasu</label>
             </div><br/>
             <div className="input">
                 <label className="label">email</label><br/>
@@ -106,7 +106,7 @@ const Signup = () => {
             </div><br/><br/><br/>
 
             <div style={{marginTop:10}}>
-                <button4 className = "button3" type="primary" onClick={onSubmit}>가입하기</button4>
+                <button className = "button3" type="primary" onClick={onSubmit}>가입하기</button>
              </div><br/><br/>
 
         </div>
