@@ -17,15 +17,39 @@ from django.http import JsonResponse
 from base64 import b64decode
 from rest_framework.exceptions import AuthenticationFailed
 
+from .kakao_api import kakao_ocr_resize,kakao_ocr
+
+
+def ocr():
+    image_path = '/Users/baeksujin/Desktop/allergy/django_react/backend/gfg.png'
+    app_key = '25c2569db9057649e482e1ba35a1f3a6'
+
+    resize_impath = kakao_ocr_resize(image_path)
+
+
+    if resize_impath is not None:
+        image_path = resize_impath
+        print("원본 대신 리사이즈된 이미지를 사용합니다.")
+    
+    output = kakao_ocr(image_path, app_key).json()
+    print(output.keys())
+    print(len(output['result']))
+    words = ''
+    for i in range(0,len(output['result'])):
+        print(output['result'][i])
+        print(output['result'][i]['recognition_words'])
+        print(type(output['result'][i]['recognition_words'][0]))
+        words = words+output['result'][i]['recognition_words'][0]
+
+    print(words)
+    return words
+
+
 class ImageView(APIView):
     
     def get(self,request):
 
         serializer_class = ImageViewSerializer
-        # queryset = Image.objects.all()
-        # serializer_data =serializer_class(queryset,many=True)
-
-        pytesseract.pytesseract.tesseract_cmd = r'/opt/homebrew/Cellar/tesseract/5.0.1/bin/tesseract'
 
         img = Image.objects.last()
         url = img.image_url
@@ -33,16 +57,18 @@ class ImageView(APIView):
         #사용자가 찍은 사진을 url을 이용해서 gtg.png로 저장하고 gfg.png를 사용해서 text를 뽑아낼것임. ocr 이용파트 코드는 다음과 같음.
         urllib.request.urlretrieve(url,"gfg.png")
         image_test = Image_pil.open('gfg.png')
-        text = pytesseract.image_to_string(image_test,lang='kor')
+
+        #tesseract => 인식이 잘 안 됨.
+        # text = pytesseract.image_to_string(image_test,lang='kor')
         # 글씨를 안 찍을경우->text에 아무것도 추출되지 않은경우 -> 안뜸!
 
         #사진 찍기 않고 test 
-        text = "마요네즈 우유"
+        # text = "마요네즈 우유"
         # => 사진에서 text에 우유와 마요네즈가 찍혀서 잘 ocr기능을 수행해서 text로 우유 마요네즈가 저장됐다고 가정.
-
-        print("text:"+text)
         #text변수에 image에서 뽑아낸 text값이 저장됨
-        text = text.replace(" ","")
+
+        text = ocr()
+
         img.text = re.split('\n',text)
         
         img.save()
@@ -86,13 +112,13 @@ class ImageView(APIView):
         #알러지 유발 재료 모음 (추후 보충하기)
 
         check = {"egg": ['달걀','계란', '마요네즈','난백','난황','전란','머랭파우더','레시틴','리베틴','글로불린','오보글로불린','라이소자임','알부민','오브알부민','난백알부민'],
-                "milk": ['우유','분유','요구르트','치즈','크림','버터','마가린','유청','기','피자','푸딩','초콜렛','캐러멜','빵류','카제인','락토알부민','락토글로불린','락토페린','락토즈'],
+                "milk": ['우유','분유','요구르트','치즈','크림','버터','마가린','유청','피자','푸딩','초콜렛','캐러멜','빵류','카제인','락토알부민','락토글로불린','락토페린','락토즈'],
                 "bean": ['콩','대두','두유','두유요거트','낫또','미소','간장류','아시아소스','대두육수','소야','소이검','식물성 가수분해 단백질','식물성 조직 단백질'],
                 "wheat": ['맥아','전분류','각종시럽','세몰리나','쿠스쿠스(세몰리나에 수분을 가해 만든 좁쌀 모양의 파스타','글루텐','글라이아딘','스펠트밀'],
                 "nut": ['호두','견과','견과류','아몬드','캐슈넛','헤이즐넛','브라질넛','피칸','너트류','그래놀라바','샐러드드레싱','낙화생','낙화생유'],
                 "shellfish": ['굴','홍합','전복','대합','한치','새조개','가리비','문어'],
                 "crustacean": ['게','새우','가재']}
-
+        
         is_Warn = False
         components = []
 
@@ -112,6 +138,7 @@ class ImageView(APIView):
 
         for i in components:
             if i in user_data:
+                print(user_data)
                 is_Warn = True
                 user_warn.append(i)
                 print("사용자가 체크한 알레르기 항목",i,"이 존재합니다.")

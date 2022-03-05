@@ -28,13 +28,17 @@ function Camera({}){
         navigate(`/Signin`);
     };
 
+    const Homepage = () => {
+        navigate(`/`);
+    };
+
     const videoRef = useRef(null);
     const photoRef = useRef(null);
 
     const [hasPhoto,setHasPhoto] = useState(false);
     const [urlPhoto,setUrlPhoto] = useState('');
     const [Text,setText] = useState("");
-    const [allergy,setAllergy] = useState("");
+    const [hasallergy,setAllergy] = useState(false);
 
 
     useEffect(()=>{
@@ -118,7 +122,10 @@ function Camera({}){
                     console.log("======사진속 음식에 존재하는 알레르기 유발 성분======");
 
                     if(response.data.check == true)
-                    {
+                    {   
+                        setAllergy(true);
+                        
+                        console.log(response.data.allergies);
                         console.log("======[user]님이 입력한 알레르기 유발 성분이 존재합니다.======");
                         console.log(response.data.warn);
                         let i=0;
@@ -135,8 +142,10 @@ function Camera({}){
                          // 출력하기
                         if(view_data){
                             setText(view_data);
-                            document.getElementById('view').innerText=response.data.text+"(이)가존재합니다\n"+
-                            view_data+"로 인한 알레르기가 발생할수 있으니 조심하세요";
+                            document.getElementById('allergies').style.display='';
+                            document.getElementById('allergies').innerText=response.data.allergies;
+                            document.getElementById('view').innerText=
+                            view_data +"알레르기가 있는 당신! 조심하세요!";
                         }
                         
                     
@@ -159,7 +168,7 @@ function Camera({}){
     return(
         <div className="Cam">
             <div className = "TopBar">
-                <labe1>samdasu</labe1>  
+                <labe1 >samdasu</labe1>  
             </div><br/>
             <span>
             <div className="VideoCam">
@@ -167,11 +176,19 @@ function Camera({}){
                 <button className="Button" onClick={takePhoto}>Click</button>
             </div>
             <div className = {"Photo" + (hasPhoto ? 'hasPhoto' : '')}>
-              <canvas ref={photoRef}></canvas>
-              <button className="Button" onClick={putData}>submit</button>
+                <canvas ref={photoRef}></canvas>
+                <button className="Button" onClick={putData}>submit</button>
             </div>
+            {
+            hasallergy === true
+            ? <p className = "Showalldata" id='allergies'></p>
+            : null
+            }
+            
             <div className = "Showdata" id='view'></div>
+
             </span>
+            
               
         </div>
 

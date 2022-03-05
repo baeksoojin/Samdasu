@@ -12,8 +12,6 @@ import pytesseract
 
 def url_to_text():
 
-    pytesseract.pytesseract.tesseract_cmd = r'/opt/homebrew/Cellar/tesseract/5.0.1/bin/tesseract'
-
     img = Image.objects.last()
     url = img.image_url
 
