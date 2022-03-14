@@ -15,8 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import routers
-from ItoT import views
 from django.views.static import serve	
 from django.conf import settings	
 from django.conf.urls.static import static	
@@ -26,6 +24,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include("ItoT.urls",namespace="ItoT")),
     path('api/',include('user_models.urls')),
-
+    path('foods/',include('Foods.urls')),
 
 ]

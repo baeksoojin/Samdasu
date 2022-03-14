@@ -58,15 +58,6 @@ class ImageView(APIView):
         urllib.request.urlretrieve(url,"gfg.png")
         image_test = Image_pil.open('gfg.png')
 
-        #tesseract => 인식이 잘 안 됨.
-        # text = pytesseract.image_to_string(image_test,lang='kor')
-        # 글씨를 안 찍을경우->text에 아무것도 추출되지 않은경우 -> 안뜸!
-
-        #사진 찍기 않고 test 
-        # text = "마요네즈 우유"
-        # => 사진에서 text에 우유와 마요네즈가 찍혀서 잘 ocr기능을 수행해서 text로 우유 마요네즈가 저장됐다고 가정.
-        #text변수에 image에서 뽑아낸 text값이 저장됨
-
         text = ocr()
 
         img.text = re.split('\n',text)
@@ -154,8 +145,6 @@ class ImageView(APIView):
         return Response(result)
 
     def post(self,request):
-
-
 
         serializer_data = ImageViewSerializer(data = request.data)
         if serializer_data.is_valid():
