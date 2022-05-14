@@ -21,7 +21,7 @@ from .kakao_api import kakao_ocr_resize,kakao_ocr
 
 
 def ocr():
-    image_path = '/Users/baeksujin/Desktop/allergy/django_react/backend/gfg.png'
+    image_path = '/Users/baeksujin/Desktop/allergy/samdasu/backend/gfg.png'
     app_key = '25c2569db9057649e482e1ba35a1f3a6'
 
     resize_impath = kakao_ocr_resize(image_path)
