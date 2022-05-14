@@ -1,1 +1,1 @@
-# django_react
+# samdasu
