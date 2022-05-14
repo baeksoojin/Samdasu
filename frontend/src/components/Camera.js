@@ -164,12 +164,8 @@ function Camera({}){
     }
 
 
-
     return(
         <div className="Cam">
-            <div className = "TopBar">
-                <labe1 >samdasu</labe1>  
-            </div><br/>
             <span>
             <div className="VideoCam">
                 <video ref={videoRef}></video>

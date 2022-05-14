@@ -1,17 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import axiosInstance from "../axios";
+import axiosInstance from "../../axios";
 import { useNavigate } from 'react-router-dom';
-import "./signin.css";
+import {Title,Input, Checkbox, Label,Button2, S2Div, Div,Label2 } from "./AccountElements";
 axios.defaults.withCredentials = true;
 
 const Signin = () => {
 
     let navigate = useNavigate();
-
-    const Homepage = () => {
-        navigate(`/`);
-    };
 
     const Camera = () => {
         navigate(`/Camera`);
@@ -51,6 +47,7 @@ const Signin = () => {
             console.log(res.data);
             axiosInstance.get('user/data').then(res=>{
                 localStorage.setItem('allergy',res.data.allergy);
+                localStorage.setItem('name',res.data.name);                
                 console.log(res);
             }).then(Camera)
 
@@ -69,28 +66,18 @@ const Signin = () => {
     };
 
     return (
-    <div className="signip">
-         <div className = "TopBar">
-                <labe1>samdasu</labe1>
-            </div><br/>
-            <div>
-                <label className="label" >email</label><br/>
-                <input className="user" name="user-id" value={email} required onChange={onChangeEmail} />
-            </div><br/>
-            <div>
-                <label className="label" >password</label><br/>
-                <input className="user" name="user-password" type="password" value={password} required onChange={onChangePassword} />
-            </div><br/>
-            
-            <div style={{marginTop:10}}>
-                <button className="button3" type="primary" onClick={onSubmit}>로그인하기</button>
-                <button className="button3" type="primary" onClick={Homepage}>홈으로</button>
-            </div><br/><br/>
-            <div style={{marginTop:10}}>
-                <p className="label2">아직 계정이 없으신가요?</p>
-                <button className="button3" type="primary" onClick={Signup}>회원가입</button>
-            </div>
-        </div>
+    <S2Div className="signip">
+        <Div>
+            <Label className="label" >email</Label>
+            <Input className="user" name="user-id" value={email} required onChange={onChangeEmail} />
+            <Label className="label" >password</Label>
+            <Input className="user" name="user-password" type="password" value={password} required onChange={onChangePassword} />
+            <p></p>
+            <Button2 className="button3" type="primary" onClick={onSubmit}>로그인하기</Button2>
+            <p className="label2">아직 계정이 없으신가요?</p>
+            <Button2 className="button3" type="primary" onClick={Signup}>회원가입</Button2>
+        </Div>
+    </S2Div>
     );
     
 

@@ -1,12 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import axiosInstance from "../axios";
+import axiosInstance from "../../axios";
 import { useNavigate } from 'react-router-dom';
 axios.defaults.withCredentials = true;
 
 
 const Logout = () => {
-
 
     console.log(localStorage.getItem("refresh_token"));
     axiosInstance.post('/blacklist/', {
