@@ -50,4 +50,6 @@ python manage.py migrate
 <img width="1349" alt="스크린샷 2022-05-15 오전 2 51 51" src="https://user-images.githubusercontent.com/74058047/168443140-44f31caf-90ec-4d34-ac90-4c6f77be9504.png">
 
 
-
+### 결과🎖
+성균관대학교 사회복지연구소 주관<br>
+제 1회 사회복지 더하기 디지털기술 아이디어 공모전 시상식 및 포럼 - 
